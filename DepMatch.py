@@ -571,8 +571,8 @@ def main():
 
 
             loss_depth1 = depth_difference_consistency_loss(feature_s_1,pred_depth_u_w_1,conf_u_w_clone_1,mask_clone_1,ignore_mask_clone_1,rank)
-            # loss_depth2 = depth_difference_consistency_loss(feature_s_2,pred_depth_u_w_2,conf_u_w_clone_2,mask_clone_2,ignore_mask_clone_2,rank)
-            loss_depth = cfg['distill_loss_weight'] * loss_depth1
+            loss_depth2 = depth_difference_consistency_loss(feature_s_2,pred_depth_u_w_2,conf_u_w_clone_2,mask_clone_2,ignore_mask_clone_2,rank)
+            loss_depth = cfg['distill_loss_weight'] * (loss_depth1 + loss_depth2)
             # ##################局部深度信息指导特征信息##################
 
             # ##################全局深度信息指导特征信息##################
@@ -585,9 +585,9 @@ def main():
 
             # # ##################深度图局部区域一致性到预测结果的一致性##################
             loss_uncertainty_consistency_1 = depth_guided_class_specific_consistency_loss(pred_u_s1, pred_depth_u_w_1,mask_clone_1, ignore_mask_clone_1)
-            # loss_uncertainty_consistency_2 = depth_guided_class_specific_consistency_loss(pred_u_s2, pred_depth_u_w_2,mask_clone_2, ignore_mask_clone_2)
+            loss_uncertainty_consistency_2 = depth_guided_class_specific_consistency_loss(pred_u_s2, pred_depth_u_w_2,mask_clone_2, ignore_mask_clone_2)
 
-            loss_uncertainty_consistency = 0.005 * loss_uncertainty_consistency_1 
+            loss_uncertainty_consistency = 0.005 * (loss_uncertainty_consistency_1 + loss_uncertainty_consistency_2)
             # ######################################################################
 
 
